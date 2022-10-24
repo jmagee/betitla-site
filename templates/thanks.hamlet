@@ -1,0 +1,20 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Betitla <br>
+            <h2>
+                The entitled renamer of things
+
+<div .container>
+    <div .row>
+        <h2>
+            Thank you!
+        <p>
+            Blobfish thank you for using Betitla.  Your future activities should now be automatically renamed.  Hopefully you like the new title, but if you don't then you can safely change it as you please.  Betitla will not attempt to rename it again.
+
+        <p>
+            You approved of the following scope: #{scope}
+
+        <p>
+            If for any reason your activities are not being renamed them please reach out so Blobfish can help you.

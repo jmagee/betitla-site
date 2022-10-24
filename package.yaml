@@ -4,6 +4,7 @@ version: "0.0.0"
 dependencies:
 
 - base >=4.9.1.0 && <5
+- betitla
 - yesod
 - yesod-core
 - yesod-static
@@ -17,6 +18,7 @@ dependencies:
 - shakespeare
 - hjsmin
 - monad-control
+- mtl
 - wai-extra
 - yaml
 - http-client-tls
@@ -38,6 +40,7 @@ dependencies:
 - case-insensitive
 - wai
 - foreign-store
+- witch
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.

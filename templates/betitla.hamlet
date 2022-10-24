@@ -1,0 +1,51 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Betitla <br>
+            <h2>
+                The entitled renamer of things
+
+<div .container>
+    <div .row>
+        <p> Quick start: <a href=#{authUrl}> Unleash the awesome power of Betitla</a>
+        <h2>
+            What is this?
+        <p> Blobfish loves Strava.  He likes to swim and do other things.  He likes to share his accomplishments and activities with his blobfish friends.  Blobfish also loves creativity and he wants each activity to be titled to reflect the character of the experience.  However, Blobfish can't type so good.  Fins instead of hands... perhaps you can see the problem.
+
+        <p> Unsatisfied with activity titles like "Morning Ride", "Lunch Run", and "Afternoon Activity", Blobfish set forth to create a great renamer of activities.  He entitled his entitler of things: "Betitla".
+
+        <h2>
+            How does it work?
+        <p>
+            <ul .list-group>
+                <li .list-group-item>1. You sell your soul to the Blobfish here: <a href=#{authUrl}> Allow Betitla to access your Strava data</a>
+                <li .list-group-item>2. Everytime you upload an activity, Betitla will automatically rename it.
+
+        <h2>
+            What do the new names look like?
+        <p>
+            You'll never know until you try!  That said, here is a sample of a renamed activity:
+            <div .bs-callout bs-callout-info well>
+                Ante meridiem relaxed, goat-like, humdrum, and modest cycle
+
+            What does this title tell us?  Well, we know it was done in the morning.  The pace was relaxed, so not so fast.  Goat-like suggests there was some impressive elevation gain - so very hilly.  Humdrum - eh, not so long.  Modest - eh, not so far.  And of course, it was a bicycle ride.
+
+        <h2>
+            What do you do with my data?
+
+        <p>
+            Blobfish respects your privacy.  Betitla reads data from your activity such as distance, duration, activity type, elevation gain, etc.  This data is translated into a rough rating that is used to generate the new title name.  None of this data is stored or even inspected by a blobfish.
+
+        <p>
+            Betitla does need to save a few key pieces of data in order to function.  First, it saves your Strava ID.  This is the long number that appears in your profile URL after "atheletes/".  This ID is saved along with a token and allows Betitla to communicate with Strava.  Secondly, Betitla logs the activity ID of every activity it processes.  This is the long number that appears in the URL for your activities.  This is stored so that Betitla won't try to rename activities it has already processed.
+
+            That's it.
+
+        <h2>
+            I have an idea on how to make Betitla even better!  Is there a way I can contribute?
+
+        <p> You betcha.  The Betitla source code is hosted on github.  You may contribute by opening a ticket with your request or by sending a pull request with your proposed changes.  Blobfish welcomes your contributions.
+
+        <p>
+            What are you waiting for?  Start here: <a href=#{authUrl}> Unleash the awesome power of Betitla</a>!
