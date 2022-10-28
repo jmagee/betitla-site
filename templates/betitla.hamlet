@@ -8,7 +8,7 @@
 
 <div .container>
     <div .row>
-        <p> Quick start: <a href=#{authUrl}> Unleash the awesome power of Betitla</a>
+        <p> Quick start: <a href=#{authUrl}>  <img src=@{StaticR img_connect_svg} /></a>
         <h2>
             What is this?
         <p> Blobfish loves Strava.  He likes to swim and do other things.  He likes to share his accomplishments and activities with his blobfish friends.  Blobfish also loves creativity and he wants each activity to be titled to reflect the character of the experience.  However, Blobfish can't type so good.  Fins instead of hands... perhaps you can see the problem.

@@ -16,11 +16,7 @@ import Betitla.Striver
 import Control.Monad.Reader (runReaderT)
 import Witch (from)
 
---import           Betitla.Striver (hasRequiredScope)
-
-hasRequiredScope :: Text -> Bool
-hasRequiredScope text = isInfixOf "activity:read" text &&
-                        isInfixOf "activity:wrzte" text
+import           Betitla.Striver (hasRequiredScope)
 
 -- Fixme
 getAuthUrl' :: IO Text
