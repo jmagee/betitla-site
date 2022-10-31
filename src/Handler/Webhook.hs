@@ -18,10 +18,16 @@ import           Witch                (from)
 
 import Debug.Trace as Debug(trace)
 
-getWebhookR :: Handler Html
-getWebhookR = defaultLayout $ do
+getWebhookR :: Handler Value
+getWebhookR = do
   maybeWord      <- lookupGetParam "hub.verify_token"
   maybeHandshake <- lookupGetParam "hub.challenge"
-  let _ = Debug.trace ("word = " ++ show maybeWord ++ ", handshake =" ++ show maybeHandshake)
-  setTitle "Nothing to see here"
-  $(widgetFile "webhook")
+  pure $ object ["hub.challenge" .= show maybeHandshake]
+
+{-getWebhookR :: Handler Html-}
+{-getWebhookR = defaultLayout $ do-}
+  {-maybeWord      <- lookupGetParam "hub.verify_token"-}
+  {-maybeHandshake <- lookupGetParam "hub.challenge"-}
+  {-let _ = Debug.trace ("word = " ++ show maybeWord ++ ", handshake =" ++ show maybeHandshake)-}
+  {-setTitle "Nothing to see here"-}
+  {-$(widgetFile "webhook")-}
