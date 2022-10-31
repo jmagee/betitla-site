@@ -9,14 +9,12 @@ module Handler.Thanks where
 
 import           Import
 
-import Betitla.Display
-import Betitla.Env
-import Betitla.Striver
+import           Betitla.Display
+import           Betitla.Env
+import           Betitla.Striver
 
-import Control.Monad.Reader (runReaderT)
-import Witch (from)
-
-import           Betitla.Striver (hasRequiredScope)
+import           Control.Monad.Reader (runReaderT)
+import           Witch                (from)
 
 -- Fixme
 getAuthUrl' :: IO Text

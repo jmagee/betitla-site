@@ -11,4 +11,6 @@
 
 /thanks ThanksR GET
 
+/webhook WebhookR GET
+
 /comments CommentR POST

@@ -28,5 +28,5 @@ ip-from-header: "_env:YESOD_IP_FROM_HEADER:false"
 # mutable-static: false
 # skip-combining: false
 
-copyright: Insert copyright statement here
+copyright: Copyright (c) 2022 Blobfish the Blobfish
 #analytics: UA-YOURCODE
