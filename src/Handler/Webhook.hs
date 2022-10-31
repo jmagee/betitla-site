@@ -15,6 +15,7 @@ import           Betitla.Striver
 
 import           Control.Monad.Reader (runReaderT)
 import           Witch                (from)
+import Data.Text (Text)
 
 import Debug.Trace as Debug(trace)
 
@@ -22,7 +23,9 @@ getWebhookR :: Handler Value
 getWebhookR = do
   maybeWord      <- lookupGetParam "hub.verify_token"
   maybeHandshake <- lookupGetParam "hub.challenge"
-  pure $ object ["hub.challenge" .= show maybeHandshake]
+  case maybeHandshake of
+    Nothing -> pure $ object ["hub.challenge" .= ("invalid" :: Text)]
+    Just x  -> pure $ object ["hub.challenge" .= x]
 
 {-getWebhookR :: Handler Html-}
 {-getWebhookR = defaultLayout $ do-}
