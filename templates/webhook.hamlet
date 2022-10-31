@@ -1,0 +1,12 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Betitla <br>
+            <h2>
+                The entitled renamer of things
+
+<div .container>
+    <div .row>
+        <h2>Nothing to see here
+            <p>Handshake:  #{show maybeHandshake}
