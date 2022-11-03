@@ -9,4 +9,4 @@
 <div .container>
     <div .row>
         <h2>Nothing to see here
-            <p>Handshake:  #{show maybeHandshake}
+            <p>Handshake:  #{show maybeId}

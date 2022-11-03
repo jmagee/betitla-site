@@ -27,6 +27,29 @@ getWebhookR = do
     Nothing -> pure $ object ["hub.challenge" .= ("invalid" :: Text)]
     Just x  -> pure $ object ["hub.challenge" .= x]
 
+postWebhookR :: Handler Html
+postWebhookR = defaultLayout $ do
+  maybeType   <- lookupPostParam "object_type"
+  maybeId     <- lookupPostParam "object_id"
+  maybeApsect <- lookupPostParam "aspect_type"
+  maybeOwner  <- lookupPostParam "owner_id"
+  $(logInfo) $ "Post webhook request received for " ++ from (show maybeOwner)
+  setTitle "Nothing to see here"
+  $(widgetFile "webhook")
+
+{-postHomeR :: Handler Html-}
+{-postHomeR = do-}
+    {-((result, formWidget), formEnctype) <- runFormPost sampleForm-}
+    {-let handlerName = "postHomeR" :: Text-}
+        {-submission = case result of-}
+            {-FormSuccess res -> Just res-}
+            {-_ -> Nothing-}
+
+    {-defaultLayout $ do-}
+        {-let (commentFormId, commentTextareaId, commentListId) = commentIds-}
+        {-aDomId <- newIdent-}
+        {-setTitle "Welcome To Yesod!"-}
+        {-$(widgetFile "homepage")-}
 {-getWebhookR :: Handler Html-}
 {-getWebhookR = defaultLayout $ do-}
   {-maybeWord      <- lookupGetParam "hub.verify_token"-}
