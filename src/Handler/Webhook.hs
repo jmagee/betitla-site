@@ -29,14 +29,16 @@ getWebhookR = do
 
 postWebhookR :: Handler Html
 postWebhookR = defaultLayout $ do
-  maybeType   <- lookupPostParam "object_type"
+  postParams  <- getPostParams
+  $(logInfo) $ from $ show postParams
+  {-maybeType   <- lookupPostParam "object_type"-}
   maybeId     <- lookupPostParam "object_id"
-  maybeApsect <- lookupPostParam "aspect_type"
-  maybeOwner  <- lookupPostParam "owner_id"
-  $(logInfo) $ "Post webhook request received for " ++ from (show maybeOwner)
-  $(logInfo) $ "Post webhook request received for " ++ from (show maybeApsect)
-  $(logInfo) $ "Post webhook request received for " ++ from (show maybeId)
-  $(logInfo) $ "Post webhook request received for " ++ from (show maybeType)
+  {-maybeApsect <- lookupPostParam "aspect_type"-}
+  {-maybeOwner  <- lookupPostParam "owner_id"-}
+  {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeOwner)-}
+  {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeApsect)-}
+  {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeId)-}
+  {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeType)-}
   setTitle "Nothing to see here"
   $(widgetFile "webhook")
 
