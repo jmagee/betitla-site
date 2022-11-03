@@ -34,6 +34,9 @@ postWebhookR = defaultLayout $ do
   maybeApsect <- lookupPostParam "aspect_type"
   maybeOwner  <- lookupPostParam "owner_id"
   $(logInfo) $ "Post webhook request received for " ++ from (show maybeOwner)
+  $(logInfo) $ "Post webhook request received for " ++ from (show maybeApsect)
+  $(logInfo) $ "Post webhook request received for " ++ from (show maybeId)
+  $(logInfo) $ "Post webhook request received for " ++ from (show maybeType)
   setTitle "Nothing to see here"
   $(widgetFile "webhook")
 

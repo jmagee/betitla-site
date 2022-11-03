@@ -12,6 +12,10 @@ import           Util
 
 import           Betitla.Striver
 
+logIf :: MonadLogger m => Bool -> Text -> m ()
+logIf True text = $(logInfo) text
+logIf False _   = pure ()
+
 getThanksR :: Handler Html
 getThanksR = defaultLayout $ do
   rc          <- appEnv <$> getYesod
@@ -21,6 +25,7 @@ getThanksR = defaultLayout $ do
   auth        <- liftIO (getAuthUrl' rc <&> (++ "&approval_prompt=force"))
   let scope   = maybe "No scope" id maybeScope
   let scopeOk = hasRequiredScope scope
+  logIf (not scopeOk) $ "Missing required scope.  Got " ++ scope
   setTitle "Blobfish thanks you"
   $(widgetFile "thanks")
 
