@@ -32,9 +32,9 @@ postWebhookR :: Handler Value
 postWebhookR = do
   postParams  <- getPostParams
   $(logInfo) $ from $ show postParams
-  jsonBody    <- requireJsonBody :: Handler Value -- SubscriptionEvent
+  jsonBody    <- requireJsonBody :: Handler SubscriptionEvent
   $(logInfo) $ from $ show jsonBody
-  pure jsonBody
+  pure $ object ["result" .= ("ok" :: Text)]
   {-maybeType   <- lookupPostParam "object_type"-}
   --maybeId     <- lookupPostParam "object_id"
   {-maybeApsect <- lookupPostParam "aspect_type"-}
