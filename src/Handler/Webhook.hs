@@ -16,6 +16,7 @@ import           Betitla.Striver
 import           Control.Monad.Reader (runReaderT)
 import           Witch                (from)
 import Data.Text (Text)
+import Strive (SubscriptionEvent)
 
 import Debug.Trace as Debug(trace)
 
@@ -27,20 +28,23 @@ getWebhookR = do
     Nothing -> pure $ object ["hub.challenge" .= ("invalid" :: Text)]
     Just x  -> pure $ object ["hub.challenge" .= x]
 
-postWebhookR :: Handler Html
-postWebhookR = defaultLayout $ do
+postWebhookR :: Handler Value
+postWebhookR = do
   postParams  <- getPostParams
   $(logInfo) $ from $ show postParams
+  jsonBody    <- requireJsonBody :: Handler Value -- SubscriptionEvent
+  $(logInfo) $ from $ show jsonBody
+  pure jsonBody
   {-maybeType   <- lookupPostParam "object_type"-}
-  maybeId     <- lookupPostParam "object_id"
+  --maybeId     <- lookupPostParam "object_id"
   {-maybeApsect <- lookupPostParam "aspect_type"-}
   {-maybeOwner  <- lookupPostParam "owner_id"-}
   {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeOwner)-}
   {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeApsect)-}
   {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeId)-}
   {-$(logInfo) $ "Post webhook request received for " ++ from (show maybeType)-}
-  setTitle "Nothing to see here"
-  $(widgetFile "webhook")
+  --setTitle "Nothing to see here"
+  -- $(widgetFile "webhook")
 
 {-postHomeR :: Handler Html-}
 {-postHomeR = do-}

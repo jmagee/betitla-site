@@ -40,6 +40,7 @@ dependencies:
 - case-insensitive
 - wai
 - foreign-store
+- strive
 - witch
 
 # The library contains all of our application code. The executable
