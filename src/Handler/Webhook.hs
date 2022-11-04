@@ -30,8 +30,8 @@ getWebhookR = do
 
 postWebhookR :: Handler Value
 postWebhookR = do
-  postParams  <- getPostParams
-  $(logInfo) $ from $ show postParams
+  --postParams  <- getPostParams
+  -- $(logInfo) $ from $ show postParams
   jsonBody    <- requireJsonBody :: Handler SubscriptionEvent
   $(logInfo) $ from $ show jsonBody
   pure $ object ["result" .= ("ok" :: Text)]

@@ -7,10 +7,13 @@
 
 module Handler.Thanks where
 
-import           Import
+import           Import hiding (Env)
 import           Util
 
+import           Betitla.Env
 import           Betitla.Striver
+
+import Witch (into)
 
 logIf :: MonadLogger m => Bool -> Text -> m ()
 logIf True text = $(logInfo) text
@@ -26,8 +29,14 @@ getThanksR = defaultLayout $ do
   let scope   = maybe "No scope" id maybeScope
   let scopeOk = hasRequiredScope scope
   logIf (not scopeOk) $ "Missing required scope.  Got " ++ scope
+  if scopeOk
+    then case maybeAuthCode of
+      Nothing -> $(logError) "No authorization code"
+      Just a  -> liftIO (processNewUser rc $ AuthCode (into a)) >>= $(logInfo)
+    else $(logInfo) $ "Missing required scope.  Got " ++ scope
+
   setTitle "Blobfish thanks you"
   $(widgetFile "thanks")
 
---processNewUser :: AuthCode -> IO Text
---processNewUser auth
+processNewUser :: Env -> AuthCode -> IO Text
+processNewUser env auth = (into . show) <$> runReaderT (newUser auth) env
