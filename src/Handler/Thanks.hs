@@ -47,6 +47,5 @@ getThanksR = defaultLayout $ do
 {-register (True, False) _ _ _ = pure "The data we obtained from Strava was malformed.  Try again?"-}
 {-register (False, _) scope _ _ = pure "Missing required scope.  Got " ++ scope"-}
 
-
 processNewUser :: Env -> AuthCode -> IO Text
 processNewUser env auth = (into . show) <$> runReaderT (newUser auth) env
