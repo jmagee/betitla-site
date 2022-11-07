@@ -37,7 +37,7 @@ getThanksR = defaultLayout $ do
     Right aId -> do
       $(logInfo) $ "Registered new athlete: " ++ tshow aId
       setTitle "Blobfish thanks you" >> $(widgetFile "thanks")
-    Left (BErrorNotNew _) ->
+    Left (DBDuplicateError _) ->
       $(logInfo) "An enthusiastic athlete attempted to register twice!" >>
       -- It is harmless to attempt to register/authenticate twice and doesn't
       -- seem unlikely so don't flag it, just politely thank the user like normal.
