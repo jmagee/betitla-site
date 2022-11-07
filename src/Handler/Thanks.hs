@@ -37,26 +37,14 @@ getThanksR = defaultLayout $ do
     Right aId -> do
       $(logInfo) $ "Registered new athlete: " ++ tshow aId
       setTitle "Blobfish thanks you" >> $(widgetFile "thanks")
+    Left (BErrorNotNew _) ->
+      $(logInfo) "An enthusiastic athlete attempted to register twice!" >>
+      -- It is harmless to attempt to register/authenticate twice and doesn't
+      -- seem unlikely so don't flag it, just politely thank the user like normal.
+      setTitle "Blobfish thanks you" >> $(widgetFile "thanks")
     Left regError -> do
       $(logError) $ "Could not register new user.  Scope info: " ++ scope ++
                     "Auth code present: " ++ tshow authOk ++ " " ++
                     display regError
       setTitle "Blobfish is concerned"
       $(widgetFile "thanks-error")
-
-
-  {-if scopeOk && authOk-}
-    {-then do-}
-      {---liftIO (processNewUser rc $ AuthCode (into auth)) >>= $(logInfo)-}
-      {-runReaderT $ newUser rc (AuthCode $ from auth) >>= \case-}
-        {-Left -}
-      {-setTitle "Blobfish thanks you"-}
-      {-$(widgetFile "thanks")-}
-    {-else do-}
-      {-$(logError) $ "Could not register new user.  Scope info: " ++ scope ++-}
-                    {-"Auth code present: " ++ tshow authOk-}
-      {-setTitle "Blobfish is concerned"-}
-      {-$(widgetFile "thanks-error")-}
-
-processNewUser :: Env -> AuthCode -> IO Text
-processNewUser env auth = tshow <$> runReaderT (newUser auth) env
