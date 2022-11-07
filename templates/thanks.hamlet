@@ -29,4 +29,4 @@
             <p>
                 Betitla requires at minimum activity:read and activity:write.
             <p>
-                Try again: <a href=#{auth}>Re-authenticate</a>
+                Try again: <a href=#{authUrl}>Re-authenticate</a>
