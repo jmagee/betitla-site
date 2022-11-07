@@ -26,7 +26,7 @@ getThanksR = defaultLayout $ do
   rc            <- appEnv <$> getYesod
   maybeAuthCode <- lookupGetParam "code"
   authUrl       <- liftIO (getAuthUrl' rc <&> (++ "&approval_prompt=force"))
-  scope         <- fromMaybe "No scope" <$> lookupGetParam "code"
+  scope         <- fromMaybe "No scope" <$> lookupGetParam "scope"
   let scopeOk    = hasRequiredScope scope
   let auth       = fromMaybe "No auth" maybeAuthCode
   let authOk     = isJust maybeAuthCode
@@ -39,7 +39,7 @@ getThanksR = defaultLayout $ do
       setTitle "Blobfish thanks you" >> $(widgetFile "thanks")
     Left regError -> do
       $(logError) $ "Could not register new user.  Scope info: " ++ scope ++
-                    "Auth code present: " ++ tshow authOk ++
+                    "Auth code present: " ++ tshow authOk ++ " " ++
                     display regError
       setTitle "Blobfish is concerned"
       $(widgetFile "thanks-error")
