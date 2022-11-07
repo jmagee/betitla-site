@@ -40,6 +40,7 @@ dependencies:
 - case-insensitive
 - wai
 - foreign-store
+- path
 - strive
 - witch
 
