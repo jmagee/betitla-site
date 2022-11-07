@@ -1,0 +1,30 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Betitla <br>
+            <h2>
+                The entitled renamer of things
+
+<div .container>
+    <div .row>
+        <h2>
+            Uh oh!  Something went wrong.
+        $if not authOk
+            <p>
+                The remote server (that is, Strava) didn't return the expected authorization code.  Blobfish is stymied.  Perhaps the issue is transiet, so try again later?  Nevertheless, should it persist, please file a github ticket here: <a href="fixme">Blobfish cares</a>.
+        $elseif not scopeOk
+            <p>
+                Blobfish is concerned that you didn't approve the necessary permissions.  Betitla may not work correctly.
+            <p>
+                You approved of the following scope: #{scope}
+            <p>
+                Betitla requires at minimum activity:read and activity:write.
+            <p>
+                Try again: <a href=#{authUrl}>Re-authenticate</a>
+        $else
+            <p>
+                Blobfish made a goof.  If you see this, then there is likely a bug in the Betitla site.  Please file a ticket: <a href="fixme">Haha, I found a bug</a>.
+
+            <p>Please include the following info in your request:
+                #{display regError}

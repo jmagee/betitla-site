@@ -7,13 +7,15 @@
 
 module Handler.Thanks where
 
-import           Import hiding (Env)
+import           Import          hiding (Env)
 import           Util
 
+import           Betitla.Display
 import           Betitla.Env
+import           Betitla.Error
 import           Betitla.Striver
 
-import Witch (into)
+import           Witch           (from)
 
 logIf :: MonadLogger m => Bool -> Text -> m ()
 logIf True text = $(logInfo) text
@@ -22,30 +24,39 @@ logIf False _   = pure ()
 getThanksR :: Handler Html
 getThanksR = defaultLayout $ do
   rc            <- appEnv <$> getYesod
-  maybeScope    <- lookupGetParam "scope"
   maybeAuthCode <- lookupGetParam "code"
   authUrl       <- liftIO (getAuthUrl' rc <&> (++ "&approval_prompt=force"))
-  let scope   = fromMaybe "No scope" maybeScope
-  let scopeOk = hasRequiredScope scope
-  let auth    = fromMaybe "No auth" maybeAuthCode
-  let authOk  = isJust maybeAuthCode
-  if scopeOk && authOk
-    then liftIO (processNewUser rc $ AuthCode (into auth)) >>= $(logInfo)
-    else $(logInfo) $ "Missing required scope.  Got " ++ scope
+  scope         <- fromMaybe "No scope" <$> lookupGetParam "code"
+  let scopeOk    = hasRequiredScope scope
+  let auth       = fromMaybe "No auth" maybeAuthCode
+  let authOk     = isJust maybeAuthCode
+  regResult     <- liftIO (if (scopeOk && authOk)
+                    then (runReaderT (newUser $ AuthCode $ from auth) rc)
+                    else pure $ Left $ StriveError "Could not get authorization")
+  case regResult of
+    Right aId -> do
+      $(logInfo) $ "Registered new athlete: " ++ tshow aId
+      setTitle "Blobfish thanks you" >> $(widgetFile "thanks")
+    Left regError -> do
+      $(logError) $ "Could not register new user.  Scope info: " ++ scope ++
+                    "Auth code present: " ++ tshow authOk ++
+                    display regError
+      setTitle "Blobfish is concerned"
+      $(widgetFile "thanks-error")
 
-  setTitle "Blobfish thanks you"
-  $(widgetFile "thanks")
 
-{-register :: (Bool, Bool) -> Text -> Text -> Env -> IO Text-}
-{-register (True, True) scope auth env = processNewUser env (AuthCode (into auth) >>= \case-}
-  {-Left e -> do -}
-    {-$(logError) $ display e -}
-    {-pure "Unfortunately there was a problem and we could not complete your registeration."-}
-  {-Right token -> --}
-    {-$(logInfo) token-}
-
-{-register (True, False) _ _ _ = pure "The data we obtained from Strava was malformed.  Try again?"-}
-{-register (False, _) scope _ _ = pure "Missing required scope.  Got " ++ scope"-}
+  {-if scopeOk && authOk-}
+    {-then do-}
+      {---liftIO (processNewUser rc $ AuthCode (into auth)) >>= $(logInfo)-}
+      {-runReaderT $ newUser rc (AuthCode $ from auth) >>= \case-}
+        {-Left -}
+      {-setTitle "Blobfish thanks you"-}
+      {-$(widgetFile "thanks")-}
+    {-else do-}
+      {-$(logError) $ "Could not register new user.  Scope info: " ++ scope ++-}
+                    {-"Auth code present: " ++ tshow authOk-}
+      {-setTitle "Blobfish is concerned"-}
+      {-$(widgetFile "thanks-error")-}
 
 processNewUser :: Env -> AuthCode -> IO Text
-processNewUser env auth = (into . show) <$> runReaderT (newUser auth) env
+processNewUser env auth = tshow <$> runReaderT (newUser auth) env
