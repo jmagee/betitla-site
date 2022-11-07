@@ -3,9 +3,13 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE TemplateHaskell       #-}
+{-# LANGUAGE TypeApplications      #-}
 {-# LANGUAGE TypeFamilies          #-}
 
-module Handler.Webhook where
+module Handler.Webhook
+( getWebhookR
+, postWebhookR
+) where
 
 import           Import
 
@@ -15,9 +19,9 @@ import           Betitla.Striver
 
 import Control.Lens.Getter ((^.))
 import           Control.Monad.Reader (runReaderT)
-import           Witch                (from)
+import           Witch                (from, unsafeInto)
 import Data.Text (Text)
-import Strive (SubscriptionEvent (..), objectType)
+import Strive (SubscriptionEvent (..), objectType, objectId, aspectType, ownerId)
 
 import Debug.Trace as Debug(trace)
 
@@ -29,17 +33,36 @@ getWebhookR = do
     Nothing -> pure $ object ["hub.challenge" .= ("invalid" :: Text)]
     Just x  -> pure $ object ["hub.challenge" .= x]
 
+handleActivityEvent :: SubscriptionEvent -> Handler Bool
+handleActivityEvent  event =
+  let activityId = ActivityId $ unsafeInto @Int64 (event ^. objectId)
+      aspect     = event ^. aspectType
+      athleteId  = event ^. ownerId
+  in do
+    $(logInfo) $ "Handling activity = " ++ tshow activityId ++
+                 " with aspect = " ++ aspect ++
+                 " and athelete = " ++ tshow athleteId
+    pure True
+
 postWebhookR :: Handler Value
 postWebhookR = do
   --postParams  <- getPostParams
   -- $(logInfo) $ from $ show postParams
   jsonBody    <- requireJsonBody :: Handler SubscriptionEvent
-  case (jsonBody ^. objectType) of
-    "activity" -> $(logInfo) "activity event"
-    "athlete"  -> $(logInfo) "athlete event"
-    x          -> $(logWarn) $"unknown event, ignoring: " ++ x
   $(logInfo) $ from $ show jsonBody
-  pure $ object ["result" .= ("ok" :: Text)]
+  case (jsonBody ^. objectType) of
+    "activity" -> do
+      $(logInfo) "activity event"
+      ok <- handleActivityEvent jsonBody
+      pure $ object ["result" .= (ok :: Bool)]
+
+    "athlete"  -> do
+      $(logInfo) "athlete event"
+      pure $ object ["result" .= ("ok" :: Text)]
+
+    x          -> do
+      $(logWarn) $"unknown event, ignoring: " ++ x
+      pure $ object ["result" .= ("ignore" :: Text)]
   {-maybeType   <- lookupPostParam "object_type"-}
   --maybeId     <- lookupPostParam "object_id"
   {-maybeApsect <- lookupPostParam "aspect_type"-}
