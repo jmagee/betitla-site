@@ -39,6 +39,7 @@ import           Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                                        outputFormat)
 import           Path                                 (parseAbsFile)
 import           System.Environment                   (getEnv)
+import           System.FilePath                      (pathSeparator)
 import           System.Log.FastLogger                (defaultBufSize,
                                                        newStdoutLoggerSet,
                                                        toLogStr)
@@ -50,6 +51,10 @@ import Handler.Home
 import Handler.Comment
 import Handler.Thanks
 import Handler.Webhook
+
+-- | Insert a system specific path separator
+slash :: FilePath -> FilePath -> FilePath
+slash a b = a ++ [pathSeparator] ++ b
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -69,7 +74,8 @@ makeFoundation appSettings = do
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
-    appEnv <- getEnv "APP_HOME" >>= parseAbsFile >>= getEnvRCFrom
+    appEnv <- getEnv "APP_HOME" <&> (`slash` ".betitla.rc")
+              >>= parseAbsFile >>= getEnvRCFrom
 
     -- Return the foundation
     return App {..}
