@@ -13,10 +13,11 @@ import           Betitla.Display
 import           Betitla.Env
 import           Betitla.Striver
 
+import Control.Lens.Getter ((^.))
 import           Control.Monad.Reader (runReaderT)
 import           Witch                (from)
 import Data.Text (Text)
-import Strive (SubscriptionEvent)
+import Strive (SubscriptionEvent (..), objectType)
 
 import Debug.Trace as Debug(trace)
 
@@ -33,6 +34,10 @@ postWebhookR = do
   --postParams  <- getPostParams
   -- $(logInfo) $ from $ show postParams
   jsonBody    <- requireJsonBody :: Handler SubscriptionEvent
+  case (jsonBody ^. objectType) of
+    "activity" -> $(logInfo) "activity event"
+    "athlete"  -> $(logInfo) "athlete event"
+    x          -> $(logWarn) $"unknown event, ignoring: " ++ x
   $(logInfo) $ from $ show jsonBody
   pure $ object ["result" .= ("ok" :: Text)]
   {-maybeType   <- lookupPostParam "object_type"-}

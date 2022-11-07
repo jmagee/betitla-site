@@ -1,0 +1,23 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Betitla <br>
+            <h2>
+                The entitled renamer of things
+
+<div .container>
+    <div .row>
+        $if out
+            <h2>
+                It is always sad to say goodbye.
+            <p>
+                Blobfish will miss you
+        $else
+            <h2>
+                Are you sure you want to go?
+            <p>
+                No longer want to use Betitla?  Blobfish understands.  You will always be welcome back.
+
+            <p>
+                Go here to revoke access for Betitla: <a href="https://www.strava.com/settings/apps">https://www.strava.com/settings/apps</a>

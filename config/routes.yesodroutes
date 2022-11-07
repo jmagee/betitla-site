@@ -9,6 +9,8 @@
 / HomeR GET
 -- / HomeR GET POST
 
+/goodbye GoodbyeR GET
+
 /thanks ThanksR GET
 
 /webhook WebhookR GET POST
