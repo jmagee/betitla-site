@@ -60,11 +60,11 @@ handleAthleteEvent event =
         let deauth = event ^. updates >>= (^. authorized)
         in (deauth == Just "false") & bool (pure False) (do
           env <- appEnv <$> getYesod
-          r <- liftIO $ runReaderT (removeUser athleteId) env
+          r <- liftIO $ runReaderT (dropUser athleteId) env
           case r of
             Left e  -> $(logError) (display e) >> pure False
             Right _ -> $(logInfo) ("Removed " ++ tshow athleteId) >> pure True)
-      x        -> pure False
+      x        -> $(logInfo) "We only handle athlete deauthentication events" >> pure False
 
 postWebhookR :: Handler Value
 postWebhookR = do
