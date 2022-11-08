@@ -56,7 +56,6 @@ handleAthleteEvent event =
     $(logInfo) $ "Handling athlete = " ++ tshow athleteId ++
                  " with aspect = " ++ aspect
     case aspect of
-      x        -> pure False
       "update" -> -- believe it or not, the revoke event is update not delete
         let deauth = event ^. updates >>= (^. authorized)
         in (deauth == Just "false") & bool (pure False) (do
@@ -65,6 +64,7 @@ handleAthleteEvent event =
           case r of
             Left e  -> $(logError) (display e) >> pure False
             Right _ -> $(logInfo) ("Removed " ++ tshow athleteId) >> pure True)
+      x        -> pure False
 
 postWebhookR :: Handler Value
 postWebhookR = do
