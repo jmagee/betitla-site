@@ -30,8 +30,8 @@ getThanksR = defaultLayout $ do
   let scopeOk    = hasRequiredScope scope
   let auth       = fromMaybe "No auth" maybeAuthCode
   let authOk     = isJust maybeAuthCode
-  regResult     <- liftIO (if (scopeOk && authOk)
-                    then (runReaderT (newUser $ AuthCode $ from auth) rc)
+  regResult     <- liftIO (if scopeOk && authOk
+                    then runReaderT (newUser $ AuthCode $ from auth) rc
                     else pure $ Left $ StriveError "Could not get authorization")
   case regResult of
     Right aId -> do

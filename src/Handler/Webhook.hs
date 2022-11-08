@@ -17,11 +17,12 @@ import           Betitla.Display
 import           Betitla.Env
 import           Betitla.Striver
 
+import Data.Function ((&))
 import Control.Lens.Getter ((^.))
 import           Control.Monad.Reader (runReaderT)
 import           Witch                (from, unsafeInto)
 import Data.Text (Text)
-import Strive (SubscriptionEvent (..), objectType, objectId, aspectType, ownerId)
+import Strive (SubscriptionEvent (..), objectType, objectId, aspectType, ownerId, updates, authorized)
 
 import Debug.Trace as Debug(trace)
 
@@ -56,12 +57,14 @@ handleAthleteEvent event =
                  " with aspect = " ++ aspect
     case aspect of
       x        -> pure False
-      "delete" -> do
-        env <- appEnv <$> getYesod
-        r <- liftIO $ runReaderT (removeUser athleteId) env
-        case r of
-          Left e  -> $(logError) (display e) >> pure False
-          Right _ -> $(logInfo) ("Removed " ++ tshow athleteId) >> pure True
+      "update" -> -- believe it or not, the revoke event is update not delete
+        let deauth = event ^. updates >>= (^. authorized)
+        in (deauth == Just "false") & bool (pure False) (do
+          env <- appEnv <$> getYesod
+          r <- liftIO $ runReaderT (removeUser athleteId) env
+          case r of
+            Left e  -> $(logError) (display e) >> pure False
+            Right _ -> $(logInfo) ("Removed " ++ tshow athleteId) >> pure True)
 
 postWebhookR :: Handler Value
 postWebhookR = do
