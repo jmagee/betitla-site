@@ -84,5 +84,5 @@ postWebhookR = do
       pure $ object ["result" .= ("ok" :: Text)]
 
     x          -> do
-      $(logWarn) $"unknown event, ignoring: " ++ x
+      $(logWarn) $ "unknown event, ignoring: " ++ x
       pure $ object ["result" .= ("ignore" :: Text)]
